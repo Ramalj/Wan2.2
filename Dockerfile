@@ -25,10 +25,10 @@ RUN pip install --no-cache-dir \
     torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 \
     --index-url https://download.pytorch.org/whl/cu121
 
-# ── 2. flash_attn prebuilt wheel (Python 3.10 · CUDA 12.1 · PyTorch 2.4) ───
-# Using a prebuilt wheel avoids the ~30-min compilation step.
+# ── 2. flash_attn prebuilt wheel (Python 3.10 · CUDA 12 · PyTorch 2.4) ─────
+# v2.7.3 uses "cu12" (covers 12.x); v2.6.3 had no cu121 wheel.
 RUN pip install --no-cache-dir \
-    "https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu121torch2.4cxx11abiFALSE-cp310-cp310-linux_x86_64.whl"
+    "https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.3/flash_attn-2.7.3+cu12torch2.4cxx11abiTRUE-cp310-cp310-linux_x86_64.whl"
 
 # ── 3. Project dependencies (torch/flash_attn already satisfied above) ──────
 COPY requirements.txt .
