@@ -1,5 +1,5 @@
-# CUDA 12.1 + cuDNN 8 — required for PyTorch 2.4 + flash_attn
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+# CUDA 12.4 + cuDNN 9 — supported by PyTorch 2.5+ and compatible with CUDA 13.x drivers
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -20,16 +20,15 @@ RUN update-alternatives --install /usr/bin/python  python  /usr/bin/python3.10 1
 
 WORKDIR /app
 
-# ── 1. PyTorch 2.4.0 with CUDA 12.1 (must come before flash_attn) ──────────
+# ── 1. PyTorch 2.5.1 with CUDA 12.4 (must come before flash_attn) ──────────
 RUN pip install --no-cache-dir \
-    torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 \
-    --index-url https://download.pytorch.org/whl/cu121
+    torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 \
+    --index-url https://download.pytorch.org/whl/cu124
 
-# ── 2. flash_attn prebuilt wheel (Python 3.10 · CUDA 12 · PyTorch 2.4) ─────
-# Must use cxx11abiFALSE — torch from download.pytorch.org/whl/cu121 is built
-# with cxx11abi=FALSE; mixing TRUE causes "undefined symbol" at import time.
+# ── 2. flash_attn prebuilt wheel (Python 3.10 · CUDA 12 · PyTorch 2.5) ─────
+# torch from download.pytorch.org/whl/cu124 uses cxx11abi=FALSE — must match.
 RUN pip install --no-cache-dir \
-    "https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.3/flash_attn-2.7.3+cu12torch2.4cxx11abiFALSE-cp310-cp310-linux_x86_64.whl"
+    "https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.3/flash_attn-2.7.3+cu12torch2.5cxx11abiFALSE-cp310-cp310-linux_x86_64.whl"
 
 # ── 3. Project dependencies (torch/flash_attn already satisfied above) ──────
 COPY requirements.txt .
