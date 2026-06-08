@@ -17,4 +17,15 @@ numpy>=1.23.5,<2
 Pillow
 huggingface_hub
 decord
+einops
+safetensors
+peft
+librosa
+loguru
+onnxruntime
+matplotlib
+omegaconf
+regex
+sentencepiece
+pandas
 runpod
